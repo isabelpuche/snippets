@@ -8,6 +8,11 @@ import altair as alt
 alt.renderers.enable("notebook")
 ```
 
+# Disable maximum rows
+```python
+alt.data_transformers.disable_max_rows()
+```
+
 # Histogram
 
 ```python
@@ -48,6 +53,26 @@ trends_line=alt.Chart(trends).mark_line().encode(
 ```
 
 # Map
+```python
+countries = alt.topo_feature("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+feature="countries")
+
+background = alt.Chart(countries).mark_geoshape(
+fill="lightgrey",
+stroke="white"
+)
+
+temp = weather_df.groupby("city").mean().reset_index()
+cities = alt.Chart(temp).mark_point().encode(
+latitude="lat",
+longitude="lon",
+size=alt.value(1),
+color=alt.Color("temp",scale=alt.Scale(range=["red","orange","lightblue"]))
+)
+
+background+cities
+
+```
 
 # Horizontal concatenation
 
